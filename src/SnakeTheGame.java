@@ -24,6 +24,8 @@ public class SnakeTheGame extends JFrame {
     int point = 1;
     int score = 0;
     JLabel showScore = new JLabel("Score: " + score);
+    String wormBit = '\u25CF'+"";
+    String appleBit = '\u03CC'+"";
 
     javax.swing.Timer timer;
 
@@ -43,7 +45,7 @@ public class SnakeTheGame extends JFrame {
         writeStartPosition();
         shuffleApple();
 
-        setLocation(500, 200);
+        setLocation(400, 200);
         pack();
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -78,7 +80,7 @@ public class SnakeTheGame extends JFrame {
                 labels[i][j].setMinimumSize(new Dimension(25, 25));
                 labels[i][j].setMaximumSize(new Dimension(25, 25));
                 labels[i][j].setPreferredSize(new Dimension(25, 25));
-                labels[i][j].setFont(new Font("Verdana", Font.BOLD, 25)); // sätt till 20 om border nyttjas
+                labels[i][j].setFont(new Font("Verdana", Font.BOLD, 30)); // sätt till 20 om border nyttjas
                 gamePanel.add(labels[i][j]);
             }
         }
@@ -95,7 +97,7 @@ public class SnakeTheGame extends JFrame {
         for (int i = 0; i < worm.size(); i++) {
             int row = worm.get(i).row;
             int col = worm.get(i).col;
-            labels[row][col].setText("#");
+            labels[row][col].setText(wormBit);
         }
         heading = 'E';
     }
@@ -111,7 +113,8 @@ public class SnakeTheGame extends JFrame {
             if (position.row != row || position.col != col) break;
         }
         apple.setNewPos(row, col);
-        labels[apple.row][apple.col].setText("@");
+      //  labels[apple.row][apple.col].setText("@");
+        labels[apple.row][apple.col].setText(appleBit);
         labels[apple.row][apple.col].setForeground(Color.red);
     }
 
@@ -145,16 +148,16 @@ public class SnakeTheGame extends JFrame {
 
         if (!haveEaten) {
             labels[worm.get(0).row][worm.get(0).col].setText("");
-            labels[apple.row][apple.col].setText("@");
+            labels[apple.row][apple.col].setText(appleBit);
             worm.remove(0);
         }
 
         try {
-            if(labels[position.row][position.col].getText().equals("#")){
+            if(labels[position.row][position.col].getText().equals(wormBit)){
                 JOptionPane.showMessageDialog(null,"Nu gick du visst in i dig själv.\nDin Score: "+score);
                 reset();
             }
-            labels[position.row][position.col].setText("#");
+            labels[position.row][position.col].setText(wormBit);
         } catch (IndexOutOfBoundsException e) {
             JOptionPane.showMessageDialog(null,"Nu gick du visst utanför banan.\nDin Score: "+score);
             reset();
