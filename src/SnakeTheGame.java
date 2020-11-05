@@ -9,7 +9,13 @@ public class SnakeTheGame extends JFrame {
 
     JPanel topPanel = new JPanel();
     JPanel gamePanel = new JPanel();
-    JLabel info = new JLabel("Press space to start and move with arrow-keys");
+    JLabel info = new JLabel("Press spacebar to start and move with arrow-keys");
+    // Radiobutton för svårighetesgrad?
+//    JRadioButton easy = new JRadioButton("Easy",true);
+//    JRadioButton normal = new JRadioButton("Normal");
+//    JRadioButton hard = new JRadioButton("Hard");
+//    ButtonGroup group;
+
     int gameRows = 12;
     int gameCols = 25;
     List<Grid> worm = new ArrayList<>();
@@ -32,6 +38,12 @@ public class SnakeTheGame extends JFrame {
     SnakeTheGame() {
         setTitle("SNAKE");
         topPanel.add(info);
+//        group.add(easy);
+//        group.add(normal);
+//        group.add(hard);
+//        topPanel.add(easy);
+//        topPanel.add(normal);
+//        topPanel.add(hard);
         topPanel.setBackground(Color.CYAN);
         gamePanel.setLayout(new GridLayout(gameRows, gameCols));
         gamePanel.setBorder(new EtchedBorder());
@@ -69,7 +81,7 @@ public class SnakeTheGame extends JFrame {
             }
         };
 
-        timer = new javax.swing.Timer(75, time);
+        timer = new javax.swing.Timer(50, time);
     }
 
     public void addLabels() {
@@ -183,7 +195,6 @@ public class SnakeTheGame extends JFrame {
         score = -1;
         addPoint();
     }
-
 
 
     public static void main(String[] args) {
