@@ -7,6 +7,8 @@ import java.util.List;
 
 public class SnakeTheGame extends JFrame {
 
+    Controls controls = new Controls();
+
     JPanel topPanel = new JPanel();
     JPanel gamePanel = new JPanel();
     JLabel info = new JLabel("Press spacebar to start and move with arrow-keys");
@@ -77,7 +79,9 @@ public class SnakeTheGame extends JFrame {
         ActionListener time = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                move();
+                controls.move(heading,position);
+                moved = true;
+                updateSnake();
             }
         };
 
@@ -138,15 +142,6 @@ public class SnakeTheGame extends JFrame {
             else if (keyStroke == KeyEvent.VK_RIGHT && heading != 'W') heading = 'E';
         }
         moved = false;
-    }
-
-    public void move() {
-        if (heading == 'N') position.row--;
-        if (heading == 'S') position.row++;
-        if (heading == 'W') position.col--;
-        if (heading == 'E') position.col++;
-        moved = true;
-        updateSnake();
     }
 
     public void updateSnake() {
