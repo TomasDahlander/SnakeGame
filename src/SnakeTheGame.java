@@ -124,8 +124,7 @@ public class SnakeTheGame extends JFrame {
             col = rand.nextInt(gameCols);
             if (position.row != row || position.col != col) break;
         }
-        apple.setNewPos(row, col);
-      //  labels[apple.row][apple.col].setText("@");
+        apple.setNewPos(row,col);
         labels[apple.row][apple.col].setText(appleBit);
         labels[apple.row][apple.col].setForeground(Color.red);
     }
@@ -145,8 +144,15 @@ public class SnakeTheGame extends JFrame {
         if (heading == 'S') position.row++;
         if (heading == 'W') position.col--;
         if (heading == 'E') position.col++;
-        moved = true;
         updateSnake();
+        moved = true;
+    }
+
+    public void reAssessOutOfBounds(){
+        if(heading == 'N') position.row = gameRows-1;
+        else if(heading == 'S') position.row = 0;
+        else if(heading == 'W') position.col = gameCols-1;
+        else if(heading == 'E') position.col = 0;
     }
 
     public void updateSnake() {
@@ -156,23 +162,25 @@ public class SnakeTheGame extends JFrame {
             shuffleApple();
         } else haveEaten = false;
 
-        worm.add(new Grid(position));
+        while(true) {
+            try {
+                if (labels[position.row][position.col].getText().equals(wormBit)) {
+                    JOptionPane.showMessageDialog(null, "Nu gick du visst in i dig själv.\nDin Score: " + score);
+                    reset();
+                    break;
+                }
+                labels[position.row][position.col].setText(wormBit);
+                worm.add(new Grid(position));
 
-        if (!haveEaten) {
-            labels[worm.get(0).row][worm.get(0).col].setText("");
-            labels[apple.row][apple.col].setText(appleBit);
-            worm.remove(0);
-        }
-
-        try {
-            if(labels[position.row][position.col].getText().equals(wormBit)){
-                JOptionPane.showMessageDialog(null,"Nu gick du visst in i dig själv.\nDin Score: "+score);
-                reset();
+                if (!haveEaten) {
+                    labels[worm.get(0).row][worm.get(0).col].setText("");
+                    labels[apple.row][apple.col].setText(appleBit);
+                    worm.remove(0);
+                }
+                break;
+            } catch (IndexOutOfBoundsException e) {
+                reAssessOutOfBounds();
             }
-            labels[position.row][position.col].setText(wormBit);
-        } catch (IndexOutOfBoundsException e) {
-            JOptionPane.showMessageDialog(null,"Nu gick du visst utanför banan.\nDin Score: "+score);
-            reset();
         }
     }
 
@@ -182,6 +190,7 @@ public class SnakeTheGame extends JFrame {
     }
 
     public void reset(){
+        timer.stop();
         for (int i = 0; i < gameRows; i++) {
             for (int j = 0; j < gameCols; j++) {
                 labels[i][j].setText("");
@@ -191,7 +200,6 @@ public class SnakeTheGame extends JFrame {
         createSnake();
         writeStartPosition();
         shuffleApple();
-        timer.stop();
         score = -1;
         addPoint();
     }
